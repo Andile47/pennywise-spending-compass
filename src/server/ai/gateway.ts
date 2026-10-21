@@ -1,5 +1,5 @@
 import { createOpenAI } from "@ai-sdk/openai";
-import { streamText, type ModelMessage } from "ai";
+import { streamText, type ModelMessage, type UIMessage } from "ai";
 import { createLovableAiGatewayRunIdFetch, getLovableAiGatewayRunId, withLovableAiGatewayRunIdHeader } from "./run-id.ts";
 
 const BASE_URL = "https://ai.gateway.lovable.dev/v1";
@@ -32,7 +32,7 @@ export function createCall(request: Request, messages: ModelMessage[], instructi
   });
   return {
     result,
-    streamResponse: (originalMessages?: Parameters<typeof result.toUIMessageStreamResponse>[0] extends infer O ? O extends { originalMessages?: infer M } ? M : never : never) =>
+    streamResponse: (originalMessages?: UIMessage[]) =>
       withLovableAiGatewayRunIdHeader(result.toUIMessageStreamResponse({ originalMessages, sendReasoning: true }), runIdFetch),
   };
 }
