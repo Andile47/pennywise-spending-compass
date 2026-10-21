@@ -22,9 +22,9 @@ function splitLine(line: string) {
 
 function normDate(s: string): string | null {
   const iso = s.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
-  if (iso) return `${iso[1]}-${iso[2].padStart(2, "0")}-${iso[3].padStart(2, "0")}`;
+  if (iso) return `${iso[1]}-${iso[2]!.padStart(2, "0")}-${iso[3]!.padStart(2, "0")}`;
   const dmy = s.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})/);
-  if (dmy) return `${dmy[3]}-${dmy[2].padStart(2, "0")}-${dmy[1].padStart(2, "0")}`;
+  if (dmy) return `${dmy[3]}-${dmy[2]!.padStart(2, "0")}-${dmy[1]!.padStart(2, "0")}`;
   const d = new Date(s);
   return isNaN(d.getTime()) ? null : d.toISOString().slice(0, 10);
 }
@@ -33,7 +33,7 @@ function normDate(s: string): string | null {
 export function parseStatementCsv(text: string): { rows: Transaction[]; skipped: number } {
   const lines = text.split(/\r?\n/).filter((l) => l.trim());
   if (lines.length === 0) return { rows: [], skipped: 0 };
-  const header = splitLine(lines[0]).map((h) => h.toLowerCase());
+  const header = splitLine(lines[0]!).map((h) => h.toLowerCase());
   let di = header.indexOf("date");
   let de = header.indexOf("description");
   let ai = header.indexOf("amount");
@@ -47,7 +47,7 @@ export function parseStatementCsv(text: string): { rows: Transaction[]; skipped:
   const rows: Transaction[] = [];
   let skipped = 0;
   for (let i = start; i < lines.length; i++) {
-    const cols = splitLine(lines[i]);
+    const cols = splitLine(lines[i]!);
     const date = normDate(cols[di] ?? "");
     const amount = Number((cols[ai] ?? "").replace(/[^0-9.\-]/g, ""));
     const description = cols[de] ?? "";

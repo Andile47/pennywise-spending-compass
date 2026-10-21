@@ -23,7 +23,7 @@ export const Route = createFileRoute("/dashboard")({
 
 const COLORS = Array.from({ length: 10 }, (_, i) => `var(--chart-${i + 1})`);
 
-function Stat({ label, value, icon: I, hint }: { label: string; value: string; icon: typeof PiggyBank; hint?: string }) {
+function Stat({ label, value, icon: I, hint }: { label: string; value: string; icon: typeof PiggyBank; hint?: string | undefined }) {
   return (
     <div className="rounded-3xl bg-card p-5 shadow-soft">
       <div className="flex items-center justify-between text-sm text-muted-foreground">
@@ -70,7 +70,7 @@ function Dashboard() {
             <ResponsiveContainer>
               <PieChart>
                 <Pie data={cats} dataKey="value" nameKey="category" innerRadius="58%" outerRadius="90%" paddingAngle={2} stroke="none">
-                  {cats.map((c, i) => <Cell key={c.category} fill={COLORS[i % COLORS.length]} />)}
+                  {cats.map((c, i) => <Cell key={c.category} fill={COLORS[i % COLORS.length]!} />)}
                 </Pie>
                 <Tooltip formatter={(v: number) => fm(v)} contentStyle={tooltipStyle} />
               </PieChart>

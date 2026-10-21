@@ -144,7 +144,7 @@ function CoachChat() {
           <PromptInputFooter>
             <PromptInputTools>
               {messages.length > 0 && !busy && (
-                <button type="button" className="px-2 text-xs text-muted-foreground hover:text-foreground" onClick={() => send(STARTERS[0])}>
+                <button type="button" className="px-2 text-xs text-muted-foreground hover:text-foreground" onClick={() => send(STARTERS[0]!)}>
                   Where is my money going?
                 </button>
               )}

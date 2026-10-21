@@ -19,7 +19,7 @@ export const Route = createFileRoute("/api/categorize")({
             const m = line.match(/^\s*(\d+)\s*[:.)-]\s*(.+?)\s*$/);
             if (!m) continue;
             const idx = Number(m[1]) - 1;
-            const cat = CATEGORIES.find((c) => c.toLowerCase() === m[2].toLowerCase());
+            const cat = CATEGORIES.find((c) => c.toLowerCase() === m[2]!.toLowerCase());
             if (idx >= 0 && idx < list.length && cat) categories[idx] = cat;
           }
           return Response.json({ categories });

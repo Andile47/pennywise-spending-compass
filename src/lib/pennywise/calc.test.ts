@@ -23,6 +23,6 @@ describe("calc", () => {
     expect(budget503020(data).map((b) => b.target)).toEqual([5000, 3000, 2000]);
   });
   it("biggest category first", () => {
-    expect(spendingByCategory(data)[0].category).toBe("Rent");
+    expect(spendingByCategory(data)[0]?.category).toBe("Rent");
   });
 });
