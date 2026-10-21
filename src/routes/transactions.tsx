@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
-import { Database, Loader2, Plus, Sparkles as Wand, Trash2, Upload } from "lucide-react";
+import { Database, Loader2, Plus, Wand2 as Wand, Trash2, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -27,11 +27,11 @@ export const Route = createFileRoute("/transactions")({
   component: TransactionsPage,
 });
 
-async function addAndCategorize(rows: Transaction[], replace: boolean, setBusy: (b: boolean) => void) {
-  setState((s) => ({ ...s, transactions: replace ? rows : [...s.transactions, ...rows] }));
+async function addAndCategorize(rows: Transaction[] | null, replace: boolean, setBusy: (b: boolean) => void) {
+  if (rows) setState((s) => ({ ...s, transactions: replace ? rows : [...s.transactions, ...rows] }));
   setBusy(true);
   try {
-    const n = await categorizeWithAI(rows.filter((r) => r.amount < 0).map((r) => r.id));
+    const n = await categorizeWithAI(rows ? rows.filter((r) => r.amount < 0).map((r) => r.id) : undefined);
     toast.success(`Sorted ${n} transactions into categories`);
   } catch (e) {
     toast.error((e as Error).message, { description: "You can still set categories by hand below." });
@@ -136,7 +136,7 @@ function TransactionsPage() {
           <div className="flex flex-wrap items-center justify-between gap-2 px-2 pb-3">
             <p className="text-sm text-muted-foreground">{txs.length} transactions · tap a category to correct it</p>
             <div className="flex gap-2">
-              <Button size="sm" variant="ghost" disabled={busy} onClick={() => addAndCategorize([], false, setBusy)}>
+              <Button size="sm" variant="ghost" disabled={busy} onClick={() => addAndCategorize(null, false, setBusy)}>
                 <Wand /> Re-sort "Other"
               </Button>
               <Button size="sm" variant="ghost" className="text-destructive" onClick={() => setState((s) => ({ ...s, transactions: [] }))}>
