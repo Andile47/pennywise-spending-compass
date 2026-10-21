@@ -6,7 +6,7 @@ const BASE_URL = "https://ai.gateway.lovable.dev/v1";
 export const MODEL = "openai/gpt-6-astra";
 
 export function createCall(request: Request, messages: ModelMessage[], instructions: string, effort: "low" | "medium" = "medium") {
-  const apiKey = process.env.LOVABLE_API_KEY;
+  const apiKey = process.env["LOVABLE_API_KEY"];
   if (!apiKey) throw new Error("AI is not configured (missing key).");
   const runIdFetch = createLovableAiGatewayRunIdFetch(getLovableAiGatewayRunId(request));
   const provider = createOpenAI({
@@ -33,7 +33,7 @@ export function createCall(request: Request, messages: ModelMessage[], instructi
   return {
     result,
     streamResponse: (originalMessages?: UIMessage[]) =>
-      withLovableAiGatewayRunIdHeader(result.toUIMessageStreamResponse({ originalMessages, sendReasoning: true }), runIdFetch),
+      withLovableAiGatewayRunIdHeader(result.toUIMessageStreamResponse({ ...(originalMessages ? { originalMessages } : {}), sendReasoning: true }), runIdFetch),
   };
 }
 

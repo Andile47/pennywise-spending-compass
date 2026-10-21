@@ -49,14 +49,20 @@ function TransactionsPage() {
 
   const onFile = async (f: File) => {
     const { rows, skipped } = parseStatementCsv(await f.text());
-    if (rows.length === 0) return toast.error("We couldn't find any transactions", { description: "Use columns: date, description, amount." });
+    if (rows.length === 0) {
+      toast.error("We couldn't find any transactions", { description: "Use columns: date, description, amount." });
+      return;
+    }
     if (skipped) toast.message(`Skipped ${skipped} rows we couldn't read`);
     await addAndCategorize(rows, false, setBusy);
   };
 
   const addManual = async () => {
     const amt = Math.abs(Number(form.amount));
-    if (!form.description.trim() || !amt) return toast.error("Add a description and an amount");
+    if (!form.description.trim() || !amt) {
+      toast.error("Add a description and an amount");
+      return;
+    }
     const row: Transaction = {
       id: `m-${Date.now()}`,
       date: form.date,

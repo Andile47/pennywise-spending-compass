@@ -48,7 +48,7 @@ function Onboarding() {
   const [result, setResult] = useState<Level | null>(null);
 
   const finish = () => {
-    const score = answers.reduce<number>((s, a, i) => s + (a === QUIZ[i].answer ? 1 : 0), 0);
+    const score = answers.reduce<number>((s, a, i) => s + (a === QUIZ[i]!.answer ? 1 : 0), 0);
     const level = levelFromScore(score);
     setResult(level);
     setState((s) => ({ ...s, profile: { onboarded: true, level, goal: goal ?? "budget", currency } }));
@@ -84,9 +84,9 @@ function Onboarding() {
       {isQuiz && (
         <>
           <p className="text-sm font-semibold text-primary">Quick check — no wrong feelings, only wrong answers 😉</p>
-          <h1 className="mt-2 text-3xl font-semibold">{QUIZ[step].q}</h1>
+          <h1 className="mt-2 text-3xl font-semibold">{QUIZ[step]!.q}</h1>
           <div className="mt-6 space-y-3">
-            {QUIZ[step].options.map((o, i) => (
+            {QUIZ[step]!.options.map((o, i) => (
               <Choice key={o} selected={answers[step] === i} onClick={() => setAnswers((a) => a.map((v, j) => (j === step ? i : v)))}>
                 {o}
               </Choice>

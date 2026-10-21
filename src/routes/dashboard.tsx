@@ -72,7 +72,7 @@ function Dashboard() {
                 <Pie data={cats} dataKey="value" nameKey="category" innerRadius="58%" outerRadius="90%" paddingAngle={2} stroke="none">
                   {cats.map((c, i) => <Cell key={c.category} fill={COLORS[i % COLORS.length]!} />)}
                 </Pie>
-                <Tooltip formatter={(v: number) => fm(v)} contentStyle={tooltipStyle} />
+                <Tooltip formatter={(v) => fm(Number(v))} contentStyle={tooltipStyle} />
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -94,7 +94,7 @@ function Dashboard() {
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                 <XAxis dataKey="week" tick={{ fontSize: 12, fill: "var(--muted-foreground)" }} />
                 <YAxis tick={{ fontSize: 12, fill: "var(--muted-foreground)" }} width={60} />
-                <Tooltip formatter={(v: number) => fm(v)} contentStyle={tooltipStyle} />
+                <Tooltip formatter={(v) => fm(Number(v))} contentStyle={tooltipStyle} />
                 <Line type="monotone" dataKey="value" name="Spent" stroke="var(--primary)" strokeWidth={3} dot={{ r: 4 }} />
               </LineChart>
             </ResponsiveContainer>
